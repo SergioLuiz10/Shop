@@ -1,7 +1,7 @@
 package application;
 
 import model.entities.departamento;
-import model.entities.seller;
+import model.entities.vendedor;
 
 import java.util.Date;
 
@@ -11,7 +11,7 @@ public class programa {
         System.out.println(dp);
 
 
-        seller sl = new seller(10,"lucas","kkk@gaml.com",new Date(),3000.00,dp);
-        System.out.println(sl);
+        vendedor vd = new vendedor(10,"lucas","kkk@gaml.com",new Date(),3000.00,dp);
+        System.out.println(vd);
     }
 }
