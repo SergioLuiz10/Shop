@@ -3,9 +3,17 @@ package model.Execução;
 import model.dao.departamentoDao;
 import model.entities.departamento;
 
+import java.sql.Connection;
 import java.util.List;
 
 public class deparamenteoDaoBanco implements departamentoDao {
+
+
+   private Connection con ;
+
+   public deparamenteoDaoBanco (Connection con){
+       this.con=con;
+   }
     @Override
     public void inserindo(departamento dp) {
 
