@@ -6,10 +6,7 @@ import model.dao.vendedorDao;
 import model.entities.departamento;
 import model.entities.vendedor;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
 
 public class vendedorDaoBanco implements vendedorDao {
@@ -53,18 +50,9 @@ public class vendedorDaoBanco implements vendedorDao {
             st.setInt(1, id);
             rs = st.executeQuery();
             if (rs.next()) {
-                departamento dp = new departamento();
-                dp.setId(rs.getInt("DepartmentId"));
-                dp.setName(rs.getString("DepName")); 
+                departamento dp = estanciandoDepartamento(rs);
 
-                vendedor vd = new vendedor();
-                vd.setId(rs.getInt("Id"));
-                vd.setName(rs.getString("Name"));
-                vd.setEmail(rs.getString("Email"));
-                vd.setSalario(rs.getDouble("BaseSalary"));
-                vd.setNascimento(rs.getDate("BirthDate"));
-                vd.setDep(dp);
-
+                vendedor vd = estanciandoVendedor(rs ,dp);
                 return vd;
             }
             return null;
@@ -75,7 +63,24 @@ public class vendedorDaoBanco implements vendedorDao {
             DB.closeResultSet(rs);
         }
     }
+   private departamento estanciandoDepartamento(ResultSet rs) throws SQLException{
+      departamento dp =new departamento();
+       dp.setId(rs.getInt("DepartmentId"));
+       dp.setName(rs.getString("DepName"));
 
+       return dp;
+   }
+   private vendedor estanciandoVendedor(ResultSet rs , departamento dp) throws SQLException{
+       vendedor vd = new vendedor();
+       vd.setId(rs.getInt("Id"));
+       vd.setName(rs.getString("Name"));
+       vd.setEmail(rs.getString("Email"));
+       vd.setSalario(rs.getDouble("BaseSalary"));
+       vd.setNascimento(rs.getDate("BirthDate"));
+       vd.setDep(dp);
+
+       return vd;
+   }
 
     @Override
     public List<vendedor> achandoTodos() {
