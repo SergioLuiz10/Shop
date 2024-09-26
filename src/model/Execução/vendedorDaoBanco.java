@@ -5,9 +5,11 @@ import db.DbException;
 import model.dao.vendedorDao;
 import model.entities.departamento;
 import model.entities.vendedor;
-
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class vendedorDaoBanco implements vendedorDao {
 
@@ -87,5 +89,41 @@ public class vendedorDaoBanco implements vendedorDao {
 
 
         return List.of();
+    }
+
+    @Override
+    public List<vendedor> achandoPeloDepartamento(departamento dp)  {
+      PreparedStatement st = null;
+      ResultSet rs = null;
+      try {
+          st = con.prepareStatement("SELECT seller.*, department.Name as DepName "
+                  + "FROM seller INNER JOIN department "
+                  + "ON seller.DepartmentId = department.Id "
+                  + "WHERE DepartmentId = ? "
+                  + "ORDER BY seller.Name");
+
+      st.setInt(1,dp.getId());
+      rs = st.executeQuery();
+
+      List<vendedor> list = new ArrayList<>();
+      Map<Integer ,departamento> map= new HashMap<>();
+      while (rs.next()){
+
+           dp =  map.get(rs.getInt("DepartmentId"));
+
+          if(dp == null){
+              dp = estanciandoDepartamento(rs);
+              map.put(rs.getInt("DepartmentId"),dp);
+          }
+          vendedor vd = estanciandoVendedor(rs ,dp);
+          list.add(vd);
+      }
+       return list;
+      }catch (SQLException e){
+          throw new DbException(e.getMessage());
+      }finally {
+          DB.closeStatement(st);
+          DB.closeResultSet(rs);
+      }
     }
 }
