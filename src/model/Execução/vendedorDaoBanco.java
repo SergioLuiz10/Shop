@@ -86,10 +86,40 @@ public class vendedorDaoBanco implements vendedorDao {
 
     @Override
     public List<vendedor> achandoTodos() {
+        departamento dp = new departamento();
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+            st = con.prepareStatement("SELECT seller.*, department.Name as DepName "
+                    + "FROM seller INNER JOIN department "
+                    + "ON seller.DepartmentId = department.Id "
+                    + "ORDER BY seller.Name");
 
 
-        return List.of();
-    }
+            rs = st.executeQuery();
+
+            List<vendedor> list = new ArrayList<>();
+            Map<Integer ,departamento> map= new HashMap<>();
+            while (rs.next()){
+
+                dp =  map.get(rs.getInt("DepartmentId"));
+
+                if(dp == null){
+                    dp = estanciandoDepartamento(rs);
+                    map.put(rs.getInt("DepartmentId"),dp);
+                }
+                vendedor vd = estanciandoVendedor(rs ,dp);
+                list.add(vd);
+            }
+            return list;
+        }catch (SQLException e){
+            throw new DbException(e.getMessage());
+        }finally {
+            DB.closeStatement(st);
+            DB.closeResultSet(rs);
+        }
+     }
+
 
     @Override
     public List<vendedor> achandoPeloDepartamento(departamento dp)  {

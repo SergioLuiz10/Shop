@@ -4,8 +4,6 @@ import model.dao.fabricaDao;
 import model.dao.vendedorDao;
 import model.entities.departamento;
 import model.entities.vendedor;
-
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -19,6 +17,12 @@ public class programa {
         System.out.println("Testando: vendedor achar pelo departamento");
        departamento dp = new departamento(3,null);
         List<vendedor> list = vendedordao.achandoPeloDepartamento(dp);
+       for (vendedor vendedorDiferente : list){
+          System.out.println(vendedorDiferente);
+       }
+        System.out.println("Testando: vendedor achartodos ");
+
+        list = vendedordao.achandoTodos();
         for (vendedor vendedorDiferente : list){
             System.out.println(vendedorDiferente);
         }
