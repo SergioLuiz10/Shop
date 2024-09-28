@@ -6,6 +6,7 @@ import model.dao.vendedorDao;
 import model.entities.departamento;
 import model.entities.vendedor;
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,6 +25,42 @@ public class vendedorDaoBanco implements vendedorDao {
     @Override
     public void inserindo(vendedor vd) {
 
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+            st = con.prepareStatement("INSERT INTO seller\n" +
+                    "(Name, Email, BirthDate, BaseSalary, DepartmentId)\n" +
+                    "VALUES\n" +
+                    "(?, ?, ?, ?, ?)",Statement.RETURN_GENERATED_KEYS);
+
+            st.setString(1,vd.getName());
+            st.setString(2,vd.getEmail());
+            st.setDate(3, new java.sql.Date(vd.getNascimento().getTime()));
+            st.setDouble(4,vd.getSalario());
+            st.setInt(5,vd.getDep().getId());
+
+            int linhasMudadas = st.executeUpdate();
+
+            if(linhasMudadas>0){
+               rs = st.getGeneratedKeys();
+               if(rs.next()){
+                   int novoId = rs.getInt(1);
+                   vd.setId(novoId);
+               }
+                DB.closeResultSet(rs);
+            }else {
+                throw new DbException("Error! nenhuma linha foi mudada");
+            }
+
+
+        }catch (SQLException e){
+            throw new DbException(e.getMessage());
+        }finally {
+            DB.closeStatement(st);
+
+        }
 
     }
 
@@ -85,8 +122,8 @@ public class vendedorDaoBanco implements vendedorDao {
    }
 
     @Override
-    public List<vendedor> achandoTodos() {
-        departamento dp = new departamento();
+    public List<vendedor> achandoTodos( ) {
+        departamento dp;
         PreparedStatement st = null;
         ResultSet rs = null;
         try {
