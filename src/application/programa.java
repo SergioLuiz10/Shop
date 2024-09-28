@@ -1,9 +1,12 @@
 package application;
 
+import model.Execução.vendedorDaoBanco;
 import model.dao.fabricaDao;
 import model.dao.vendedorDao;
 import model.entities.departamento;
 import model.entities.vendedor;
+
+import java.util.Date;
 import java.util.List;
 
 
@@ -26,5 +29,10 @@ public class programa {
         for (vendedor vendedorDiferente : list){
             System.out.println(vendedorDiferente);
         }
+
+        vendedor novoVd = new vendedor(null, "Sergio", "sergio@gmail.com", new Date(), 500.00, dp);
+        vendedordao.inserindo(novoVd);
+        System.out.println("novo vendedor="+ novoVd.getId());
+
     }
 }
