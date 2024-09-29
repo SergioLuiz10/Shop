@@ -67,6 +67,30 @@ public class vendedorDaoBanco implements vendedorDao {
     @Override
     public void mudando(vendedor vd) {
 
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+            st = con.prepareStatement("UPDATE seller\n" +
+                    "SET Name = ?, Email = ?, BirthDate = ?, BaseSalary = ?, DepartmentId = ?\n" +
+                    "WHERE Id = ?");
+
+            st.setString(1,vd.getName());
+            st.setString(2,vd.getEmail());
+            st.setDate(3, new java.sql.Date(vd.getNascimento().getTime()));
+            st.setDouble(4,vd.getSalario());
+            st.setInt(5,vd.getDep().getId());
+            st.setInt(6,vd.getId());
+
+
+            st.executeUpdate();
+        }catch (SQLException e){
+            throw new DbException(e.getMessage());
+        }finally {
+            DB.closeStatement(st);
+
+        }
 
     }
 

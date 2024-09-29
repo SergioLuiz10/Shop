@@ -32,5 +32,10 @@ public class programa {
         vendedordao.inserindo(novoVd);
         System.out.println("novo vendedor="+ novoVd.getId());
 
+
+        System.out.println("Testando : vendedor mudando ");
+        vendedor alterado = new vendedor(12,"talita","talita@gmail.com",new Date(),600,dp);
+        vendedordao.mudando(alterado);
+        System.out.println("Alterado :"+alterado);
     }
 }
