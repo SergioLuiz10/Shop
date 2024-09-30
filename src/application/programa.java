@@ -7,11 +7,12 @@ import model.entities.vendedor;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Scanner;
 
 
 public class programa {
     public static void main(String[] args) {
-
+       Scanner ler = new Scanner(System.in);
         vendedorDao vendedordao = fabricaDao.criarVendedorDao();
         System.out.println("=== Testando : vendedor achando pelo id");
         vendedor vd = vendedordao.achandoPeloId(3);
@@ -35,7 +36,15 @@ public class programa {
 
         System.out.println("Testando : vendedor mudando ");
         vendedor alterado = new vendedor(12,"talita","talita@gmail.com",new Date(),600,dp);
-        vendedordao.mudando(alterado);
-        System.out.println("Alterado :"+alterado);
+       vendedordao.mudando(alterado);
+      System.out.println("Alterado :"+alterado);
+
+
+        System.out.println("Testado : deletar do vendedor:");
+        vendedordao.deletandoPeloId(14);
+        vendedordao.deletandoPeloId(15);
+
+
+
     }
 }

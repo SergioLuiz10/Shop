@@ -96,6 +96,22 @@ public class vendedorDaoBanco implements vendedorDao {
 
     @Override
     public void deletandoPeloId(Integer id) {
+        PreparedStatement st = null;
+
+        try {
+            st = con.prepareStatement("DELETE FROM seller WHERE Id = ?");
+
+
+          st.setInt(1,id);
+
+          st.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DB.closeStatement(st);
+
+        }
 
 
     }
