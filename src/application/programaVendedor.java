@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Scanner;
 
 
-public class programa {
+public class programaVendedor {
     public static void main(String[] args) {
        Scanner ler = new Scanner(System.in);
         vendedorDao vendedordao = fabricaDao.criarVendedorDao();
