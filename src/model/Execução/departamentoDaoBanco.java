@@ -62,7 +62,7 @@ public class departamentoDaoBanco implements departamentoDao {
         }
     }
 
-    // Novo método para deletar registros relacionados (como seller)
+   
     public void deleteSellersByDepartmentId(Integer departmentId) {
         PreparedStatement st = null;
 
@@ -85,7 +85,7 @@ public class departamentoDaoBanco implements departamentoDao {
 
             deleteSellersByDepartmentId(id);
 
-            // Agora pode deletar o departamento
+           
             st = conn.prepareStatement("DELETE FROM department WHERE Id = ?");
             st.setInt(1, id);
 
